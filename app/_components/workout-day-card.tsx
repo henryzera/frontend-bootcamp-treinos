@@ -28,34 +28,25 @@ export function WorkoutDayCard({
   coverImageUrl,
 }: WorkoutDayCardProps) {
   const durationInMinutes = Math.round(estimatedDurationInSeconds / 60);
-  const normalizedCoverImageUrl = (() => {
-    if (!coverImageUrl) return undefined;
-
-    try {
-      const url = new URL(coverImageUrl);
-      if (
-        url.protocol === "http:" &&
-        (url.hostname === "localhost" || url.hostname === "127.0.0.1")
-      ) {
-        return `${url.pathname}${url.search}`;
-      }
-    } catch {
-      return coverImageUrl;
-    }
-
-    return coverImageUrl;
-  })();
+  const isRemoteImage = coverImageUrl?.startsWith("http");
 
   return (
     <div className="relative flex h-[200px] w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5">
-      {normalizedCoverImageUrl && (
-        <Image
-          src={normalizedCoverImageUrl}
-          alt={name}
-          fill
-          className="pointer-events-none object-cover"
-        />
-      )}
+      {coverImageUrl &&
+        (isRemoteImage ? (
+          <img
+            src={coverImageUrl}
+            alt={name}
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          />
+        ) : (
+          <Image
+            src={coverImageUrl}
+            alt={name}
+            fill
+            className="pointer-events-none object-cover"
+          />
+        ))}
       <div className="absolute inset-0 bg-foreground/40" />
       <div className="relative">
         <div className="flex items-center gap-1 rounded-full bg-background/16 px-2.5 py-1.5 backdrop-blur-sm">

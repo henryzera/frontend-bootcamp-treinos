@@ -49,7 +49,7 @@ export default function AuthPage() {
 
       <div className="flex-1" />
 
-      <div className="relative z-10 flex flex-col items-center gap-15 rounded-t-[20px] bg-primary px-5 pb-10 pt-12">
+      <div className="relative z-10 flex flex-col items-center gap-15 rounded-t-4xl bg-primary px-5 pb-10 pt-12">
         <div className="flex w-full flex-col items-center gap-6">
           <h1 className="w-full text-center font-heading text-[32px] font-semibold leading-[1.05] text-primary-foreground">
             O app que vai transformar a forma como você treina.
@@ -57,7 +57,7 @@ export default function AuthPage() {
 
           <Button
             onClick={handleGoogleLogin}
-            className="h-[38px] rounded-full bg-white px-6 text-black hover:bg-white/90"
+            className="h-9.5 rounded-full bg-white px-6 text-black hover:bg-white/90"
           >
             <Image
               src="/google-icon.svg"

@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-import { getHomeData } from "@/app/_lib/api/fetch-generated";
 import Link from "next/link";
 import {
   House,
@@ -8,10 +6,12 @@ import {
   ChartNoAxesColumn,
   UserRound,
 } from "lucide-react";
+import dayjs from "dayjs";
+import { getHomeData } from "@/app/_lib/api/fetch-generated";
 import { cn } from "@/lib/utils";
 
 interface BottomNavProps {
-  activePage?: "home" | "calendar" | "stats";
+  activePage?: "home" | "calendar" | "stats" | "profile";
 }
 
 export async function BottomNav({ activePage = "home" }: BottomNavProps) {
@@ -24,7 +24,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
       : null;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 rounded-t-4xl border border-border bg-background px-6 py-4">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 rounded-t-[20px] border border-border bg-background px-6 py-4">
       <Link href="/" className="p-3">
         <House
           className={cn(
@@ -40,7 +40,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
               "size-6",
               activePage === "calendar"
                 ? "text-foreground"
-                : "text-muted-foreground",
+                : "text-muted-foreground"
             )}
           />
         </Link>
@@ -51,7 +51,7 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
               "size-6",
               activePage === "calendar"
                 ? "text-foreground"
-                : "text-muted-foreground",
+                : "text-muted-foreground"
             )}
           />
         </button>
@@ -69,9 +69,16 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
           )}
         />
       </Link>
-      <button className="p-3">
-        <UserRound className="size-6 text-muted-foreground" />
-      </button>
+      <Link href="/profile" className="p-3">
+        <UserRound
+          className={cn(
+            "size-6",
+            activePage === "profile"
+              ? "text-foreground"
+              : "text-muted-foreground"
+          )}
+        />
+      </Link>
     </nav>
   );
 }

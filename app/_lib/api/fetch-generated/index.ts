@@ -62,6 +62,64 @@ export type GetHomeData500 = {
   code: string;
 };
 
+/**
+ * @nullable
+ */
+export type GetUserTrainData200 = {
+  userId: string;
+  userName: string;
+  weightInGrams: number;
+  heightInCentimeters: number;
+  age: number;
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
+  bodyFatPercentage: number;
+} | null;
+
+export type GetUserTrainData401 = {
+  error: string;
+  code: string;
+};
+
+export type GetUserTrainData500 = {
+  error: string;
+  code: string;
+};
+
+export type PutMeBody = {
+  /** @minimum 0 */
+  weightInGrams: number;
+  /** @minimum 0 */
+  heightInCentimeters: number;
+  /** @minimum 0 */
+  age: number;
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
+  bodyFatPercentage: number;
+};
+
+export type PutMe200 = {
+  userId: string;
+  weightInGrams: number;
+  heightInCentimeters: number;
+  age: number;
+  bodyFatPercentage: number;
+};
+
+export type PutMe401 = {
+  error: string;
+  code: string;
+};
+
+export type PutMe500 = {
+  error: string;
+  code: string;
+};
+
 export type GetStatsParams = {
   /**
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))$
@@ -501,6 +559,94 @@ export const getHomeData = async (
   return customFetch<getHomeDataResponse>(getGetHomeDataUrl(date), {
     ...options,
     method: "GET",
+  });
+};
+
+/**
+ * @summary Get user train data
+ */
+export type getUserTrainDataResponse200 = {
+  data: GetUserTrainData200;
+  status: 200;
+};
+
+export type getUserTrainDataResponse401 = {
+  data: GetUserTrainData401;
+  status: 401;
+};
+
+export type getUserTrainDataResponse500 = {
+  data: GetUserTrainData500;
+  status: 500;
+};
+
+export type getUserTrainDataResponseSuccess = getUserTrainDataResponse200 & {
+  headers: Headers;
+};
+export type getUserTrainDataResponseError = (
+  | getUserTrainDataResponse401
+  | getUserTrainDataResponse500
+) & {
+  headers: Headers;
+};
+
+export type getUserTrainDataResponse =
+  | getUserTrainDataResponseSuccess
+  | getUserTrainDataResponseError;
+
+export const getGetUserTrainDataUrl = () => {
+  return `/me/`;
+};
+
+export const getUserTrainData = async (
+  options?: RequestInit,
+): Promise<getUserTrainDataResponse> => {
+  return customFetch<getUserTrainDataResponse>(getGetUserTrainDataUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+/**
+ * @summary Upsert user train data
+ */
+export type putMeResponse200 = {
+  data: PutMe200;
+  status: 200;
+};
+
+export type putMeResponse401 = {
+  data: PutMe401;
+  status: 401;
+};
+
+export type putMeResponse500 = {
+  data: PutMe500;
+  status: 500;
+};
+
+export type putMeResponseSuccess = putMeResponse200 & {
+  headers: Headers;
+};
+export type putMeResponseError = (putMeResponse401 | putMeResponse500) & {
+  headers: Headers;
+};
+
+export type putMeResponse = putMeResponseSuccess | putMeResponseError;
+
+export const getPutMeUrl = () => {
+  return `/me/`;
+};
+
+export const putMe = async (
+  putMeBody: PutMeBody,
+  options?: RequestInit,
+): Promise<putMeResponse> => {
+  return customFetch<putMeResponse>(getPutMeUrl(), {
+    ...options,
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(putMeBody),
   });
 };
 

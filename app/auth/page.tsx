@@ -1,15 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { authClient } from "@/app/_lib/auth-client";
 import { Button } from "@/components/ui/button";
 
 export default function AuthPage() {
+  const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
 
-  if (isPending) return null;
-  if (session) redirect("/");
+  useEffect(() => {
+    if (!isPending && session) {
+      router.replace("/");
+    }
+  }, [isPending, router, session]);
+
+  if (isPending || session) {
+    return null;
+  }
 
   const handleGoogleLogin = async () => {
     const { error } = await authClient.signIn.social({
@@ -64,7 +73,7 @@ export default function AuthPage() {
         <p className="font-heading text-xs leading-[1.4] text-primary-foreground/70">
           ©2026 Copyright FIT.AI. Todos os direitos reservados
         </p>
-        </div>
       </div>
+    </div>
   );
 }

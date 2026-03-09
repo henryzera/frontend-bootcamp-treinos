@@ -1,4 +1,3 @@
-import { redirect } from "next/navigation";
 import { getHomeData } from "./_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import Image from "next/image";

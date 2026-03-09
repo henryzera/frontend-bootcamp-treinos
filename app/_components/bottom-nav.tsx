@@ -19,19 +19,17 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
   const homeData = await getHomeData(today.format("YYYY-MM-DD"));
 
   const calendarHref =
-    homeData.status === 200 && homeData.data.todayWorkoutDay
-      ? `/workout-plans/${homeData.data.todayWorkoutDay.workoutPlanId}/days/${homeData.data.todayWorkoutDay.id}`
-      : undefined;
+    homeData.status === 200 && homeData.data.activeWorkoutPlanId
+      ? `/workout-plans/${homeData.data.activeWorkoutPlanId}`
+      : null;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 rounded-t-[20px] border border-border bg-background px-6 py-4">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 rounded-t-4xl border border-border bg-background px-6 py-4">
       <Link href="/" className="p-3">
         <House
           className={cn(
             "size-6",
-            activePage === "home"
-              ? "text-foreground"
-              : "text-muted-foreground",
+            activePage === "home" ? "text-foreground" : "text-muted-foreground"
           )}
         />
       </Link>

@@ -31,7 +31,7 @@ export function WorkoutDayCard({
   const isRemoteImage = coverImageUrl?.startsWith("http");
 
   return (
-    <div className="relative flex h-[200px] w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5">
+    <div className="relative flex h-50 w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5">
       {coverImageUrl &&
         (isRemoteImage ? (
           <img

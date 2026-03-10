@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
-import { getWorkoutPlan } from "@/app/_lib/api/fetch-generated";
+import { getWorkoutPlan, getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Goal } from "lucide-react";
@@ -34,7 +35,16 @@ export default async function WorkoutPlanPage({
   if (!session.data?.user) redirect("/auth");
 
   const { id } = await params;
-  const workoutPlanData = await getWorkoutPlan(id);
+  const [workoutPlanData, homeData, trainData] = await Promise.all([
+    getWorkoutPlan(id),
+    getHomeData(dayjs().format("YYYY-MM-DD")),
+    getUserTrainData(),
+  ]);
+
+  const needsOnboarding =
+    (homeData.status === 200 && !homeData.data.activeWorkoutPlanId) ||
+    (trainData.status === 200 && !trainData.data);
+  if (needsOnboarding) redirect("/onboarding");
 
   if (workoutPlanData.status !== 200) redirect("/");
 
@@ -47,7 +57,7 @@ export default async function WorkoutPlanPage({
 
   return (
     <div className="flex min-h-svh flex-col bg-background pb-24">
-      <div className="relative flex h-74 shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-4xl px-5 pb-10 pt-5">
+      <div className="relative flex h-[296px] shrink-0 flex-col items-start justify-between overflow-hidden rounded-b-[20px] px-5 pb-10 pt-5">
         <div className="absolute inset-0" aria-hidden="true">
           <Image
             src="/workout-plan-banner.png"

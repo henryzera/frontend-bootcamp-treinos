@@ -1,14 +1,6 @@
-import Link from "next/link";
-import {
-  House,
-  Calendar,
-  ChartNoAxesColumn,
-  UserRound,
-} from "lucide-react";
 import dayjs from "dayjs";
 import { getHomeData } from "@/app/_lib/api/fetch-generated";
-import { cn } from "@/lib/utils";
-import { ChatOpenButton } from "@/app/_components/chat-open-button";
+import { BottomNavClient } from "@/app/_components/bottom-nav-client";
 
 interface BottomNavProps {
   activePage?: "home" | "calendar" | "stats" | "profile";
@@ -23,60 +15,5 @@ export async function BottomNav({ activePage = "home" }: BottomNavProps) {
       ? `/workout-plans/${homeData.data.activeWorkoutPlanId}`
       : null;
 
-  return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-center gap-6 rounded-t-4xl border border-border bg-background px-6 py-4">
-      <Link href="/" className="p-3">
-        <House
-          className={cn(
-            "size-6",
-            activePage === "home" ? "text-foreground" : "text-muted-foreground"
-          )}
-        />
-      </Link>
-      {calendarHref ? (
-        <Link href={calendarHref} className="p-3">
-          <Calendar
-            className={cn(
-              "size-6",
-              activePage === "calendar"
-                ? "text-foreground"
-                : "text-muted-foreground"
-            )}
-          />
-        </Link>
-      ) : (
-        <button className="p-3">
-          <Calendar
-            className={cn(
-              "size-6",
-              activePage === "calendar"
-                ? "text-foreground"
-                : "text-muted-foreground"
-            )}
-          />
-        </button>
-      )}
-      <ChatOpenButton />
-      <Link href="/stats" className="p-3">
-        <ChartNoAxesColumn
-          className={cn(
-            "size-6",
-            activePage === "stats"
-              ? "text-foreground"
-              : "text-muted-foreground"
-          )}
-        />
-      </Link>
-      <Link href="/profile" className="p-3">
-        <UserRound
-          className={cn(
-            "size-6",
-            activePage === "profile"
-              ? "text-foreground"
-              : "text-muted-foreground"
-          )}
-        />
-      </Link>
-    </nav>
-  );
+  return <BottomNavClient activePage={activePage} calendarHref={calendarHref} />;
 }

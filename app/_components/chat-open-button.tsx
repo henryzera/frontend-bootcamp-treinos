@@ -2,8 +2,19 @@
 
 import { Sparkles } from "lucide-react";
 import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
+import { cn } from "@/lib/utils";
 
-export function ChatOpenButton() {
+interface ChatOpenButtonProps {
+  className?: string;
+  iconClassName?: string;
+  label?: string;
+}
+
+export function ChatOpenButton({
+  className,
+  iconClassName,
+  label = "Abrir Coach AI",
+}: ChatOpenButtonProps) {
   const [, setChatParams] = useQueryStates({
     chat_open: parseAsBoolean.withDefault(false),
     chat_initial_message: parseAsString,
@@ -12,9 +23,12 @@ export function ChatOpenButton() {
   return (
     <button
       onClick={() => setChatParams({ chat_open: true })}
-      className="rounded-full bg-primary p-4"
+      aria-label={label}
+      className={cn("rounded-full bg-primary p-4", className)}
     >
-      <Sparkles className="size-6 text-primary-foreground" />
+      <Sparkles
+        className={cn("size-6 text-primary-foreground", iconClassName)}
+      />
     </button>
   );
 }

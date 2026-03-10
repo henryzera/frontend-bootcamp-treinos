@@ -52,45 +52,52 @@ export default async function StatsPage() {
   } = statsResponse.data;
 
   return (
-    <div className="flex min-h-svh flex-col bg-background pb-24">
-      <div className="flex h-14 items-center px-5">
-        <p
-          className="text-[22px] uppercase leading-[1.15] text-foreground"
-          style={{ fontFamily: "var(--font-anton)" }}
-        >
-          Fit.ai
-        </p>
-      </div>
-
-      <div className="px-5">
-        <StreakBanner workoutStreak={workoutStreak} />
-      </div>
-
-      <div className="flex flex-col gap-3 p-5">
-        <h2 className="font-heading text-lg font-semibold text-foreground">
-          Consistência
-        </h2>
-
-        <StatsHeatmap consistencyByDay={consistencyByDay} today={today} />
-
-        <div className="grid grid-cols-2 gap-3">
-          <StatCard
-            icon={CircleCheck}
-            value={String(completedWorkoutsCount)}
-            label="Treinos Feitos"
-          />
-          <StatCard
-            icon={CirclePercent}
-            value={`${Math.round(conclusionRate * 100)}%`}
-            label="Taxa de conclusão"
-          />
+    <div className="flex min-h-svh flex-col bg-background pb-24 lg:pb-10 lg:pl-72">
+      <div className="w-full md:mx-auto md:max-w-6xl md:px-6 lg:px-10">
+        <div className="flex h-14 items-center px-5 md:px-0">
+          <p
+            className="text-[22px] uppercase leading-[1.15] text-foreground"
+            style={{ fontFamily: "var(--font-anton)" }}
+          >
+            Fit.ai
+          </p>
         </div>
+      </div>
 
-        <StatCard
-          icon={Hourglass}
-          value={formatTotalTime(totalTimeInSeconds)}
-          label="Tempo Total"
-        />
+      <div className="w-full md:mx-auto md:max-w-6xl md:px-6 lg:px-10">
+        <div className="grid gap-5 p-5 md:px-0 md:pt-6 lg:grid-cols-12 lg:gap-6 lg:pb-6">
+          <div className="lg:col-span-5">
+            <StreakBanner workoutStreak={workoutStreak} />
+          </div>
+
+          <div className="flex flex-col gap-3 lg:col-span-7">
+            <div className="grid grid-cols-2 gap-3">
+              <StatCard
+                icon={CircleCheck}
+                value={String(completedWorkoutsCount)}
+                label="Treinos Feitos"
+              />
+              <StatCard
+                icon={CirclePercent}
+                value={`${Math.round(conclusionRate * 100)}%`}
+                label="Taxa de conclusão"
+              />
+            </div>
+
+            <StatCard
+              icon={Hourglass}
+              value={formatTotalTime(totalTimeInSeconds)}
+              label="Tempo Total"
+            />
+          </div>
+
+          <div className="flex flex-col gap-3 lg:col-span-12">
+            <h2 className="font-heading text-lg font-semibold text-foreground">
+              Consistência
+            </h2>
+            <StatsHeatmap consistencyByDay={consistencyByDay} today={today} />
+          </div>
+        </div>
       </div>
 
       <BottomNav activePage="stats" />

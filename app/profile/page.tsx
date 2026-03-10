@@ -41,7 +41,7 @@ export default async function ProfilePage() {
 
   return (
     <div className="flex min-h-svh flex-col bg-background pb-24">
-      <div className="flex h-[56px] items-center px-5">
+      <div className="flex h-14 items-center px-5">
         <p
           className="text-[22px] uppercase leading-[1.15] text-foreground"
           style={{ fontFamily: "var(--font-anton)" }}
@@ -53,7 +53,7 @@ export default async function ProfilePage() {
       <div className="flex flex-col items-center gap-5 px-5 pt-5">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-3">
-            <Avatar className="size-[52px]">
+            <Avatar className="size-13">
               <AvatarImage src={user.image ?? undefined} alt={user.name} />
               <AvatarFallback className="text-lg">
                 {user.name?.charAt(0)?.toUpperCase()}
@@ -72,7 +72,7 @@ export default async function ProfilePage() {
 
         <div className="grid w-full grid-cols-2 gap-3">
           <div className="flex flex-col items-center gap-5 rounded-xl bg-primary/8 p-5">
-            <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
+            <div className="flex items-center rounded-full bg-primary/8 p-2.25">
               <Weight className="size-4 text-primary" />
             </div>
             <div className="flex flex-col items-center gap-1.5">
@@ -86,7 +86,7 @@ export default async function ProfilePage() {
           </div>
 
           <div className="flex flex-col items-center gap-5 rounded-xl bg-primary/8 p-5">
-            <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
+            <div className="flex items-center rounded-full bg-primary/8 p-2.25">
               <Ruler className="size-4 text-primary" />
             </div>
             <div className="flex flex-col items-center gap-1.5">
@@ -100,7 +100,7 @@ export default async function ProfilePage() {
           </div>
 
           <div className="flex flex-col items-center gap-5 rounded-xl bg-primary/8 p-5">
-            <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
+            <div className="flex items-center rounded-full bg-primary/8 p-2.25">
               <BicepsFlexed className="size-4 text-primary" />
             </div>
             <div className="flex flex-col items-center gap-1.5">
@@ -114,7 +114,7 @@ export default async function ProfilePage() {
           </div>
 
           <div className="flex flex-col items-center gap-5 rounded-xl bg-primary/8 p-5">
-            <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
+            <div className="flex items-center rounded-full bg-primary/8 p-2.25">
               <User className="size-4 text-primary" />
             </div>
             <div className="flex flex-col items-center gap-1.5">

@@ -7,7 +7,7 @@ import { useQueryStates, parseAsBoolean, parseAsString } from "nuqs";
 import { Sparkles, X, ArrowUp } from "lucide-react";
 import { Streamdown } from "streamdown";
 import "streamdown/styles.css";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -34,11 +34,14 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     chat_initial_message: parseAsString,
   });
 
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error, clearError } = useChat({
     transport: new DefaultChatTransport({
-      api: `${process.env.NEXT_PUBLIC_API_URL}/ai`,
+      api: `${process.env.NEXT_PUBLIC_API_URL ?? ""}/ai`,
       credentials: "include",
     }),
+    onError: (chatError) => {
+      console.error("Chat request failed", chatError);
+    },
   });
 
   const form = useForm<ChatFormValues>({
@@ -48,6 +51,10 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialMessageSentRef = useRef(false);
+  const messageValue = useWatch({
+    control: form.control,
+    name: "message",
+  });
 
   useEffect(() => {
     if (embedded && initialMessage && !initialMessageSentRef.current) {
@@ -85,19 +92,21 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  if (!chatParams.chat_open) return null;
   if (!embedded && !chatParams.chat_open) return null;
 
   const handleClose = () => {
+    clearError();
     setChatParams({ chat_open: false, chat_initial_message: null });
   };
 
   const onSubmit = (values: ChatFormValues) => {
+    clearError();
     sendMessage({ text: values.message });
     form.reset();
   };
 
   const handleSuggestion = (text: string) => {
+    clearError();
     sendMessage({ text });
   };
 
@@ -188,12 +197,20 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         <div ref={messagesEndRef} />
       </div>
       <div className="flex shrink-0 flex-col gap-3">
+        {error && (
+          <div className="mx-5 rounded-2xl border border-destructive/20 bg-destructive/8 px-4 py-3">
+            <p className="font-heading text-sm text-destructive">
+              Nao foi possivel responder agora. Tente novamente.
+            </p>
+          </div>
+        )}
         {messages.length === 0 && (
           <div className="flex gap-2.5 overflow-x-auto px-5">
             {SUGGESTED_MESSAGES.map((suggestion) => (
               <button
                 key={suggestion}
                 onClick={() => handleSuggestion(suggestion)}
+                disabled={isLoading}
                 className="whitespace-nowrap rounded-full bg-primary/10 px-4 py-2 font-heading text-sm text-foreground"
               >
                 {suggestion}
@@ -224,7 +241,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
             />
             <Button
               type="submit"
-              disabled={!form.watch("message").trim() || isLoading}
+              disabled={!messageValue?.trim() || isLoading}
               size="icon"
               className="size-10.5 shrink-0 rounded-full"
             >

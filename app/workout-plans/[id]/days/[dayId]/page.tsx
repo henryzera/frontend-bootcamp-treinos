@@ -32,6 +32,14 @@ const WEEKDAY_TITLE_LABELS: Record<string, string> = {
   SUNDAY: "Domingo",
 };
 
+const normalizeCoverImageUrl = (coverImageUrl?: string | null) => {
+  if (!coverImageUrl) return null;
+  if (coverImageUrl.startsWith("http://localhost:3000/")) {
+    return coverImageUrl.replace("http://localhost:3000", "");
+  }
+  return coverImageUrl;
+};
+
 export default async function WorkoutDayPage({
   params,
 }: {
@@ -67,6 +75,8 @@ export default async function WorkoutDayPage({
     sessions,
     coverImageUrl,
   } = workoutDayData.data;
+  const normalizedCoverImageUrl = normalizeCoverImageUrl(coverImageUrl);
+  const isRemoteImage = normalizedCoverImageUrl?.startsWith("http");
 
   const durationInMinutes = Math.round(estimatedDurationInSeconds / 60);
 
@@ -91,14 +101,21 @@ export default async function WorkoutDayPage({
 
       <div className="px-5">
         <div className="relative flex h-50 w-full flex-col items-start justify-between overflow-hidden rounded-xl p-5">
-          {coverImageUrl && (
-            <Image
-              src={coverImageUrl}
-              alt={name}
-              fill
-              className="pointer-events-none object-cover"
-            />
-          )}
+          {normalizedCoverImageUrl &&
+            (isRemoteImage ? (
+              <img
+                src={normalizedCoverImageUrl}
+                alt={name}
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={normalizedCoverImageUrl}
+                alt={name}
+                fill
+                className="pointer-events-none object-cover"
+              />
+            ))}
           <div className="absolute inset-0 bg-foreground/40" />
 
           <div className="relative">

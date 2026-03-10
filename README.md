@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bootcamp Treinos (Front)
 
-## Getting Started
+Aplicacao web em Next.js (App Router) que consome a `bootcamp-treinos-api`.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (React 19)
+- TailwindCSS v4 + shadcn/ui
+- Better Auth (client)
+- Orval (client gerado para a API)
+- AI SDK (chat em `app/_components/chat.tsx`)
+
+## Requisitos
+
+- Node.js + pnpm
+- API rodando e acessivel (por padrao `http://localhost:8080`)
+
+## Rodar localmente
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Variaveis de ambiente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Arquivo: `bootcamp-treinos-front/.env`
 
-## Learn More
+- `NEXT_PUBLIC_API_URL`: base da API (ex: `http://localhost:8080`)
+- `NEXT_PUBLIC_BASE_URL`: base do front (ex: `http://localhost:3000`)
 
-To learn more about Next.js, take a look at the following resources:
+## Rotas principais
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/auth`: login (Google via Better Auth)
+- `/onboarding`: coleta/confirmacao de dados do usuario + chat embutido
+- `/`: home (treino do dia + consistencia)
+- `/stats`: estatisticas + streak + heatmap
+- `/workout-plans/:id`: detalhes do plano
+- `/workout-plans/:id/days/:dayId`: pagina do treino do dia
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Como a API e consumida
 
-## Deploy on Vercel
+- O client Orval fica em `app/_lib/api/fetch-generated/`.
+- `NEXT_PUBLIC_API_URL` aponta para a API; requests usam cookies (sessao) com `credentials: "include"`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Troubleshooting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `ECONNREFUSED`/`TypeError: fetch failed`: API nao esta rodando ou `NEXT_PUBLIC_API_URL` esta apontando para a porta errada.
+- Login Google falhando: confira `FRONTEND_URL` e `trustedOrigins` no backend e as URLs autorizadas no Google Cloud.
